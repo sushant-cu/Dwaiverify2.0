@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dawai Sahi Hai — Medicine Verification</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+<!-- SAFETY NET — independent of app.js. If app.js fails to load, is
+     incomplete, or throws an error, this guarantees content becomes
+     visible anyway. Belt-and-suspenders for a live pitch demo. -->
+<script>
+  setTimeout(function () {
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      el.classList.add('in-view');
+    });
+  }, 900);
+</script>
+
+<div class="mesh-bg">
+  <div class="blob blob-saffron"></div>
+  <div class="blob blob-green"></div>
+  <div class="blob blob-mint"></div>
+</div>
+
+<div class="notice-bar">
+  <span class="icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+  QR codes on medicine strips can be copied. This app checks patterns a copy can't fake.
+</div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      Dawai Sahi Hai
+    </div>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#signals">How it Works</a>
+      <a href="#scan">Live Demo</a>
+      <a href="#impact">Impact</a>
+      <a href="#founder">Founder</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-pill-sm" onclick="scrollToId('scan')">Scan Now</button>
+      <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#problem">Problem</a>
+    <a href="#signals">How it Works</a>
+    <a href="#scan">Live Demo</a>
+    <a href="#impact">Impact</a>
+    <a href="#founder">Founder</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">🇮🇳 Built for Viksit Bharat @2047</div>
+    <h1>
+      <span class="hero-devanagari">दवाई सही है?</span><br>
+      <span class="hero-gradient">Now you can know.</span>
+    </h1>
+    <div class="hero-english">DAWAI SAHI HAI TRUE MEDICINE VERIFICATION</div>
+    <p class="hero-sub">
+      One in five medicine strips in India is counterfeit. The government's QR
+      system can be copied. We built something that can't be a scanner that
+      checks patterns, not just printed codes.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="scrollToId('scan')">
+        Try the Scanner
+        <span class="icon"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </button>
+      <button class="btn-ghost" onclick="scrollToId('problem')">See the Problem</button>
+    </div>
+  </div>
+
+  <div class="device-wrap">
+    <div class="device-frame" id="deviceFrame">
+      <div class="device-notch"></div>
+      <div class="device-screen">
+        <div class="device-shine"></div>
+        <div class="mini-status">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+          Verified
+        </div>
+        <div class="mini-name">Crocin 500mg</div>
+        <div class="mini-sub">GSK Consumer Healthcare</div>
+
+        <div class="mini-sig-row">
+          <span class="icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></span>
+          Database match confirmed
+        </div>
+        <div class="mini-sig-row">
+          <span class="icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+          Scan volume normal
+        </div>
+        <div class="mini-sig-row">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          No community reports
+        </div>
+
+        <div class="mini-count">
+          <div class="mini-count-num">342</div>
+          <div class="mini-count-label">TOTAL SCANS LOGGED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM ═══ -->
+<section id="problem" class="section">
+  <div class="section-head reveal">
+    <div class="eyebrow">The Problem</div>
+    <h2>The government tried QR codes. Counterfeiters copied them.</h2>
+    <p>India mandated QR codes on the top 300 medicine brands in 2023. Within two years, fake drug networks were printing working replicas a copied QR scans as "Genuine" every time.</p>
+  </div>
+
+  <div class="stat-grid reveal">
+    <div class="glass stat-card">
+      <div class="stat-num red">1 in 5</div>
+      <div class="stat-label">medicine strips sold in India are counterfeit</div>
+    </div>
+    <div class="glass stat-card">
+      <div class="stat-num red">1 Lakh</div>
+      <div class="stat-label">people die every year from fake medicine</div>
+    </div>
+    <div class="glass stat-card">
+      <div class="stat-num amber">0</div>
+      <div class="stat-label">consumer tools existed to check a strip before us</div>
+    </div>
+  </div>
+
+  <div class="compare-grid reveal">
+    <div class="compare-card bad">
+      <div class="compare-icon"><span class="icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></div>
+      <div class="compare-title">QR Scan Alone</div>
+      <div class="compare-text">A counterfeiter copies the exact QR from a genuine strip. Your scan says "Genuine." You're fooled and so is everyone else who buys that batch.</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-icon"><span class="icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span></div>
+      <div class="compare-title">Dawai Sahi Hai</div>
+      <div class="compare-text">We track how many times a batch has been scanned, from where, and what the community reports. A copied code can't fake ten thousand independent scans.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SIGNALS (parallel checks, not steps) ═══ -->
+<section id="signals" class="section section-alt">
+  <div class="section-head reveal">
+    <div class="eyebrow">How It Works</div>
+    <h2>Three signals, checked together</h2>
+    <p>No single signal is enough on its own. Together, they're nearly impossible for a counterfeiter to fake.</p>
+  </div>
+
+  <div class="signal-grid reveal">
+    <div class="signal-card">
+      <div class="signal-card-icon"><span class="icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></span></div>
+      <div class="signal-card-title">Database Match</div>
+      <div class="signal-card-text">Every scan checks against verified manufacturer batch records. The first filter but not the last one.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-card-icon"><span class="icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span></div>
+      <div class="signal-card-title">Scan Volume Anomaly</div>
+      <div class="signal-card-text">A batch of 10,000 strips shouldn't see 80,000 scans. When volume outpaces production, we flag it automatically, no human review needed.</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-card-icon"><span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span></div>
+      <div class="signal-card-title">Community Reports</div>
+      <div class="signal-card-text">Reports are persisted in the backend and linked to future verification checks. Each validated report adds another signal for the next buyer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LIVE SCANNER ═══ -->
+<section id="scan" class="section">
+  <div class="section-head reveal">
+    <div class="eyebrow">Live Demo</div>
+    <h2>Scan a barcode right now</h2>
+    <p>Try it with a real medicine strip, or use one of the test barcodes below.</p>
+  </div>
+
+  <div class="glass scan-panel reveal">
+    <div class="scanner-frame" id="scannerFrame">
+      <div class="scanner-idle" id="scannerIdle">
+        <span class="icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg></span>
+        <p>Point your camera at the barcode<br>on any medicine strip</p>
+        <p class="idle-note">Works with any medicine barcode</p>
+      </div>
+      <div id="interactive" class="viewport"></div>
+      <div class="scan-beam" id="scanBeam"></div>
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="confirm-meter" id="confirmMeter">
+        <span class="confirm-dot" id="confirmDot1"></span>
+        <span class="confirm-dot" id="confirmDot2"></span>
+        <span class="confirm-dot" id="confirmDot3"></span>
+        <span class="confirm-label">Confirming match…</span>
+      </div>
+    </div>
+
+    <div class="engine-badge" id="engineBadge"></div>
+
+    <div class="scan-btns">
+      <button class="btn-scan" id="startBtn" onclick="startScanner()">
+        <span class="icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg></span>
+        Start Camera Scan
+      </button>
+      <button class="btn-stop" id="stopBtn" onclick="stopScanner()">
+        <span class="icon"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></span>
+        Stop Camera
+      </button>
+    </div>
+
+    <div class="manual-entry">
+      <div class="manual-label-text">Can't scan? Enter the barcode manually try <strong>8901234567890</strong>, <strong>0000000000000</strong>, or <strong>9999999999999</strong></div>
+      <div class="manual-row">
+        <input type="text" id="manualInput" class="manual-input" placeholder="e.g. 8901234567890" inputmode="numeric">
+        <button class="btn-check" onclick="manualCheck()">Check</button>
+      </div>
+    </div>
+
+    <section class="result-section hidden" id="resultSection">
+      <div class="result-card" id="resultCard">
+        <div class="result-top">
+          <div class="result-icon-wrap" id="resultIconWrap"><span class="icon" id="resultIcon"></span></div>
+          <div class="result-verdict" id="resultVerdict"></div>
+          <div class="result-medicine-name" id="resultMedicineName"></div>
+        </div>
+
+        <div class="signal-panel">
+          <div class="signal-label">Verification Signals</div>
+          <div class="signal-row"><span class="sig-icon-box" id="sig1IconBox"></span><span class="sig-text" id="sig1Text"></span></div>
+          <div class="signal-row"><span class="sig-icon-box" id="sig2IconBox"></span><span class="sig-text" id="sig2Text"></span></div>
+          <div class="signal-row"><span class="sig-icon-box" id="sig3IconBox"></span><span class="sig-text" id="sig3Text"></span></div>
+        </div>
+
+        <div class="result-detail" id="resultDetail"></div>
+        <div class="result-barcode" id="resultBarcode"></div>
+
+        <div class="scan-count-box">
+          <span class="scan-count-num" id="scanCountNum"></span>
+          <span class="scan-count-label">total scans logged for this barcode</span>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-outline" onclick="resetScan()">Scan Another</button>
+          <button class="btn-report-small" onclick="reportCurrentScan()">Report This</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ═══ LIVE ALERTS ═══ -->
+<section id="alerts" class="section section-alt">
+  <div class="section-head reveal">
+    <div class="eyebrow">Community</div>
+    <h2>Live alerts from across India</h2>
+    <p>Crowdsourced reports from people who scanned before you.</p>
+  </div>
+  <div class="alerts-list reveal" id="alertsList"></div>
+  <div class="alerts-footer reveal">Every alert here started as one person's report.</div>
+</section>
+
+<!-- ═══ REPORT ═══ -->
+<section id="report" class="section">
+  <div class="glass scan-panel reveal">
+    <div class="eyebrow">Report</div>
+    <h2 style="font-size:26px;font-weight:700;margin-bottom:10px;">Something looked wrong?</h2>
+    <p style="font-size:14.5px;color:var(--slate);line-height:1.6;">Different colour, broken seal, strange smell report it. Your report protects the next person who buys that batch.</p>
+
+    <div class="report-form">
+      <div class="form-group">
+        <label>Medicine name</label>
+        <input type="text" id="reportBrand" placeholder="e.g. Crocin 500mg, Dolo 650">
+      </div>
+      
+      <div class="form-group">
+  <label>Barcode (optional)</label>
+  <input
+    type="text"
+    id="reportBarcode"
+    placeholder="e.g. 8901234567890"
+    inputmode="numeric"
+  >
+</div>
+
+
+  
+      <div class="form-group">
+        <label>Batch number (printed near expiry date)</label>
+        <input type="text" id="reportBatch" placeholder="e.g. B2504, ML24001">
+      </div>
+      <div class="form-group">
+        <label>Chemist / city</label>
+        <input type="text" id="reportLocation" placeholder="e.g. Sharma Medical, Kanpur">
+      </div>
+      <div class="form-group">
+        <label>What looked wrong?</label>
+        <input type="text" id="reportIssue" placeholder="e.g. Tablet colour different, strip feels cheap">
+      </div>
+      <button class="btn-report-full" onclick="submitReport()">Submit Report</button>
+      <div class="report-success hidden" id="reportSuccess">Report submitted.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IMPACT ═══ -->
+<section id="impact" class="section section-alt">
+  <div class="section-head reveal">
+    <div class="eyebrow">Impact</div>
+    <h2>Dawai Sahi Hai in numbers</h2>
+  </div>
+  <div class="counter-grid reveal">
+    <div class="glass counter-card"><div class="counter-num" id="totalScans">0</div><div class="counter-label">Total Scans</div></div>
+    <div class="glass counter-card"><div class="counter-num" id="flaggedBatches">0</div><div class="counter-label">Flagged Batches</div></div>
+    <div class="glass counter-card"><div class="counter-num" id="reportsSubmitted">0</div><div class="counter-label">Community Reports</div></div>
+    <div class="glass counter-card"><div class="counter-num" id="medicinesVerified">0</div><div class="counter-label">Medicines in DB</div></div>
+  </div>
+</section>
+
+<!-- ═══ FOUNDER ═══ -->
+<section id="founder" class="section">
+  <div class="glass founder-card reveal">
+    <div class="founder-avatar">SK</div>
+    <div>
+      <div class="founder-name">Sushant Kumar</div>
+      <div class="founder-role">Founder, Dawai Sahi Hai</div>
+      <p class="founder-bio">
+        17 year old computer science student joining Chandigarh University. National finalist at MY Bharat Budget Quest 2026 selected from 12 lakh participants for a policy brief on skill financing, presented at a PM-level dialogue. Built Dawai Sahi Hai after discovering that India's own QR verification system was already being copied by counterfeit networks.
+      </p>
+      <div class="founder-tags">
+        <span class="founder-tag">MY Bharat National Finalist</span>
+        <span class="founder-tag">MoSPI Consultation Contributor</span>
+        <span class="founder-tag">AI × Public Policy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROADMAP ═══ -->
+<section class="section section-alt">
+  <div class="section-head reveal">
+    <div class="eyebrow">Roadmap</div>
+    <h2>From prototype to national infrastructure</h2>
+  </div>
+  <div class="roadmap-list reveal">
+    <div class="roadmap-item">
+      <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+      <div class="roadmap-body">
+        <div class="roadmap-date">NOW</div>
+        <div class="roadmap-title">Prototype with manual batch database</div>
+        <div class="roadmap-desc">Working scanner, three signal engine, live on the web built solo in under three weeks.</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+      <div class="roadmap-body">
+        <div class="roadmap-date">NEXT</div>
+        <div class="roadmap-title">Pharmacy partnerships</div>
+        <div class="roadmap-desc">Onboard local chemists to widen batch coverage beyond the top 300 QR-mandated brands.</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-line"><div class="roadmap-dot"></div></div>
+      <div class="roadmap-body">
+        <div class="roadmap-date">VISION</div>
+        <div class="roadmap-title">CDSCO / Digital Drug Regulatory System integration</div>
+        <div class="roadmap-desc">Become the consumer facing layer on top of India's national drug database the missing link between regulator and patient.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="section">
+  <div class="section-head reveal">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions judges usually ask</h2>
+  </div>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <button class="faq-q">Does this replace the government's QR system?<span class="icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+      <div class="faq-a"><div class="faq-a-inner">No it sits on top of it. QR gives you a starting data point. We add the two things QR can't provide: scan pattern anomaly detection and real time community reporting.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What happens if a medicine isn't in the database yet?<span class="icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+      <div class="faq-a"><div class="faq-a-inner">We say so directly "Not in Database Yet" rather than guessing. The database grows with every pharmacy partnership and CDSCO integration is the long term fix.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can a counterfeiter fake the scan-volume signal?<span class="icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+      <div class="faq-a"><div class="faq-a-inner">Not at scale. Copying one QR code is trivial. Generating tens of thousands of independent, geographically distributed scan events is not.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg></span>
+    Dawai Sahi Hai
+  </div>
+  <p>Built for Viksit Bharat 2047 · By Sushant Kumar</p>
+  <p>CDSCO Helpline: <strong>1800-11-4477</strong></p>
+  <p class="footer-note">Prototype: reports are linked to verification records through the configured backend. This app does not replace a pharmacist. Always buy from registered chemists. When in doubt, do not consume.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
