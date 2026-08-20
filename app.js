@@ -743,16 +743,41 @@ function scrollToReport() {
 function renderAlerts() {
   const list = document.getElementById("alertsList");
   if (!list) return;
+
   list.innerHTML = "";
-  DEMO_ALERTS.forEach(alert => addAlertToUI(alert));
-  reportLog.slice().reverse().forEach(report => addAlertToUI({
-    medicine: report.medicine,
-    batch: report.batch,
-    barcode: report.barcode,
-    location: report.location,
-    issue: report.issue || "Suspicious appearance",
-    time: report.time || report.timestamp || ""
-  }));
+
+  const MAX_VISIBLE_ALERTS = 5;
+
+  // Keep only the newest reports for the homepage.
+  const recentReports = reportLog
+    .slice()
+    .sort((a, b) => {
+      const timeA = new Date(a.timestamp || a.time || 0).getTime();
+      const timeB = new Date(b.timestamp || b.time || 0).getTime();
+      return timeB - timeA;
+    })
+    .slice(0, MAX_VISIBLE_ALERTS);
+
+  // Show real reports when available.
+  if (recentReports.length > 0) {
+    recentReports.forEach(report => {
+      addAlertToUI({
+        medicine: report.medicine || "Unknown medicine",
+        batch: report.batch || "Unknown batch",
+        barcode: report.barcode || "",
+        location: report.location || "Location not provided",
+        issue: report.issue || "Suspicious appearance",
+        time: report.timestamp || report.time || ""
+      });
+    });
+
+    return;
+  }
+
+  // Demo alerts only when there are no real reports yet.
+  DEMO_ALERTS
+    .slice(0, MAX_VISIBLE_ALERTS)
+    .forEach(alert => addAlertToUI(alert));
 }
 
 function addAlertToUI(alert) {
