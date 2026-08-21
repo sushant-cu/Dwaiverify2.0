@@ -402,9 +402,12 @@ async function startScanner() {
       }
       scannerActive = true;
 
-      const devices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
-      const backCam = devices.find(d => /back|rear|environment/i.test(d.label));
-      const deviceId = (backCam || devices[0] || {}).deviceId;
+      // FIX: Use standard HTML5 media API instead of ZXing's broken static method
+      const allDevices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = allDevices.filter(device => device.kind === 'videoinput');
+      
+      const backCam = videoDevices.find(d => /back|rear|environment/i.test(d.label));
+      const deviceId = backCam ? backCam.deviceId : (videoDevices.length > 0 ? videoDevices[0].deviceId : undefined);
 
       zxingControls = await zxingReader.decodeFromVideoDevice(deviceId, videoEl, (result) => {
         if (result) {
