@@ -18,7 +18,7 @@
 - Provides manual barcode entry when camera scanning is unavailable.
 
 ### 2. Reference / batch database matching
-The frontend loads medicine reference data from a published Google Sheets CSV endpoint. Each matching record can contain fields such as:
+The frontend loads medicine reference data. Each matching record can contain fields such as:
 
 - Barcode
 - Medicine name
