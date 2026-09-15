@@ -2,7 +2,7 @@
 
 ### Consumer-facing medicine verification and reporting prototype
 
-**Dawai Sahi Hai** is a browser-based prototype that explores a consumer-facing verification layer for medicines. Instead of treating a barcode or QR code as proof of authenticity by itself, the prototype combines multiple signals—reference/batch data, scan-activity patterns, and community reports—to provide additional context for screening and review.
+**Dawai Sahi Hai** is a browser based prototype that explores a consumer-facing verification layer for medicines. Instead of treating a barcode or QR code as proof of authenticity by itself, the prototype combines multiple signals—reference/batch data, scan-activity patterns, and community reports to provide additional context for screening and review.
 
 > **Important:** This is a prototype screening and evidence layer. A successful scan is **not** a laboratory test, a regulatory authenticity certificate, or a determination that a medicine is medically suitable or safe to consume. Production deployment would require validated manufacturer/regulatory data, security controls, moderation, and appropriate regulatory workflows.
 
@@ -334,7 +334,7 @@ This repository is a working prototype, not a production medicine-authentication
 
 ## Safety note
 
-Do not use this prototype to make a medical treatment decision. For suspected medicine-quality or authenticity issues, retain appropriate evidence and use official reporting channels and qualified healthcare professionals.
+Do not use this prototype to make a medical treatment decision. For suspected medicine quality or authenticity issues, retain appropriate evidence and use official reporting channels and qualified healthcare professionals.
 
 ---
 
