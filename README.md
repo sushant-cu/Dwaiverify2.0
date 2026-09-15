@@ -2,7 +2,7 @@
 
 ### Consumer-facing medicine verification and reporting prototype
 
-**Dawai Sahi Hai** is a browser based prototype that explores a consumer-facing verification layer for medicines. Instead of treating a barcode or QR code as proof of authenticity by itself, the prototype combines multiple signals—reference/batch data, scan-activity patterns, and community reports to provide additional context for screening and review.
+**Dawai Sahi Hai** is a browser based prototype that explores a consumer-facing verification layer for medicines. Instead of treating a barcode or QR code as proof of authenticity by itself, the prototype combines multiple signals reference/batch data, scan-activity patterns, and community reports to provide additional context for screening and review.
 
 > **Important:** This is a prototype screening and evidence layer. A successful scan is **not** a laboratory test, a regulatory authenticity certificate, or a determination that a medicine is medically suitable or safe to consume. Production deployment would require validated manufacturer/regulatory data, security controls, moderation, and appropriate regulatory workflows.
 
@@ -14,7 +14,7 @@
 - Falls back to **ZXing** when native barcode detection is unavailable.
 - Supports EAN-13, EAN-8, UPC-A, UPC-E, Code 128 and Code 39 paths.
 - Requires the same decoded value to be detected across **3 confirmations** before accepting a camera scan.
-- Applies a check-digit validation gate to supported numeric retail barcode lengths (8, 12 and 13 digits).
+- Applies a check digit validation gate to supported numeric retail barcode lengths (8, 12 and 13 digits).
 - Provides manual barcode entry when camera scanning is unavailable.
 
 ### 2. Reference / batch database matching
